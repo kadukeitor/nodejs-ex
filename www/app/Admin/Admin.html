@@ -1,0 +1,68 @@
+<div layout="row" class="Admin">
+    <div flex="60" flex-offset="20" flex-xs="100" flex-offset-xs="0" flex-gt-md="50" flex-offset-gt-md="25">
+        <md-card style="margin-bottom: 40px;">
+            <md-card-content>
+                <md-subheader class="md-no-sticky"> Create Bot Activity</md-subheader>
+                <form name="activityForm" ng-submit="save(activity)">
+                    <md-input-container class="md-block">
+                        <label>Bot</label>
+                        <md-select name="bot" ng-model="activity.bot" required>
+                            <md-option value="{{ bot._id }}" ng-repeat="bot in bots">{{ bot.displayName }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Activity</label>
+                        <md-select name="activity" ng-model="activity.activity" required>
+                            <md-option value="notification">Notification</md-option>
+                            <md-option value="walking">Walking</md-option>
+                            <md-option value="running">Running</md-option>
+                            <md-option value="basketball">Basketball</md-option>
+                            <md-option value="football">Football</md-option>
+                            <md-option value="bicycle">Bicycle</md-option>
+                            <md-option value="gym">Gym</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Date</label>
+                        <input name="datetime" mdc-datetime-picker="" min-date="minDate" date="true" time="true"
+                               type="text"
+                               ng-model="activity.datetime" class="md-input" required>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Duration</label>
+                        <md-select name="duration" ng-model="activity.duration">
+                            <md-option value="0">0m</md-option>
+                            <md-option value="10">10m</md-option>
+                            <md-option value="15">15m</md-option>
+                            <md-option value="25">25m</md-option>
+                            <md-option value="30">30m</md-option>
+                            <md-option value="45">45m</md-option>
+                            <md-option value="60">1h</md-option>
+                            <md-option value="90">1h30m</md-option>
+                            <md-option value="120">2h</md-option>
+                            <md-option value="180">3h+</md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Location</label>
+                        <input name="location" ng-model="activity.location" places-auto-complete size=80 placeholder=""
+                               required>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Description</label>
+                        <textarea name="description" ng-model="activity.description" md-maxlength="150" rows="5"
+                                  md-select-on-focus></textarea>
+                    </md-input-container>
+
+                    <div layout="row" layout-align="end center">
+                        <md-button class="md-accent md-raised" type="submit">Save</md-button>
+                    </div>
+
+                </form>
+
+            </md-card-content>
+        </md-card>
+
+    </div>
+</div>
+

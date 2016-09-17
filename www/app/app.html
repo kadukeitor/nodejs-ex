@@ -1,0 +1,34 @@
+<md-toolbar class="md-accent" md-scroll-shrink="true" md-shrink-speed-factor="0.75">
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Menu" ng-click="toggleLeft()">
+            <md-icon class="fa" md-font-icon="fa-bars"></md-icon>
+        </md-button>
+        <h2 class="md-toolbar-tools">
+            <span flex>Social Fitness</span>
+        </h2>
+    </div>
+</md-toolbar>
+
+<md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4" >
+    <md-content layout-margin>
+        <md-list>
+            <md-list-item ng-click="goTo('app.home')">
+                <md-icon class="fa" md-font-icon="ion-home"></md-icon>
+                <p>Home</p>
+            </md-list-item>
+            <md-list-item ng-click="goTo('app.activities')">
+                <md-icon md-font-icon="ion-android-walk"></md-icon>
+                <p>Activities</p>
+            </md-list-item>
+            <md-list-item ng-click="goTo('app.profile')">
+                <md-icon md-font-icon="ion-android-person"></md-icon>
+                <p>Profile</p>
+            </md-list-item>
+        </md-list>
+    </md-content>
+</md-sidenav>
+
+<md-content>
+    <ui-view class="app"></ui-view>
+</md-content>
+

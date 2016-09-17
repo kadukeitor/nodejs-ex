@@ -1,0 +1,10 @@
+.Home {
+
+}
+
+.Home .activity-info {
+    display: inline-table;
+    padding: 15px;
+    margin: -40px 10px auto auto;
+    background: white;
+}

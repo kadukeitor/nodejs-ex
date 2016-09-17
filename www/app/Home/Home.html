@@ -1,0 +1,64 @@
+<div layout="row" class="Home">
+    <div flex="60" flex-offset="20" flex-xs="100" flex-offset-xs="0" flex-gt-md="50" flex-offset-gt-md="25">
+
+
+        <md-card ng-click="newActivity()" style="cursor: pointer;" md-ink-ripple>
+            <md-card-header class="md-clickable">
+                <md-card-avatar>
+                    <img class="md-user-avatar" ng-src="{{ user.picture || 'img/avatars/man-1.png' }}"/>
+                </md-card-avatar>
+                <md-card-header-text>
+                    <span class="md-title">Create a new activity</span>
+                    <span class="md-subhead">and watch your friends join.</span>
+                </md-card-header-text>
+            </md-card-header>
+        </md-card>
+
+        <md-card ng-repeat="activity in activities">
+            <md-card-header>
+                <md-card-avatar>
+                    <img class="md-user-avatar" ng-src="{{ activity.creator.picture }}"/>
+                </md-card-avatar>
+                <md-card-header-text>
+                    <span class="md-title">{{ activity.creator.displayName }}</span>
+                    <span class="md-subhead">
+                        <span am-time-ago="activity.datetime"></span>
+                        ( {{ activity.datetime | date:'medium' }} )
+                    </span>
+                </md-card-header-text>
+            </md-card-header>
+            <div style="position: relative;top:-30px;text-align: right;height: 0;">
+                <md-button ng-if="isSubscribed(activity)" class="md-fab md-primary" aria-label="Joined">
+                    <md-icon class="fa" md-font-icon="fa-check" aria-label="Joined"></md-icon>
+                </md-button>
+                <md-button ng-if="!isSubscribed(activity)"
+                           class="md-fab" aria-label="Join"
+                           ng-click="joinToActivity($event,activity)">
+                    <md-icon class="fa" md-font-icon="fa-heart" aria-label="Join"></md-icon>
+                </md-button>
+            </div>
+            <div class="sports-container" ng-style="{'background-color':getColor(activity)}">
+                <img ng-src="img/activities/{{ activity.activity }}.png" class="sports">
+            </div>
+            <md-whiteframe class="activity-info md-whiteframe-1dp">
+                <p style="text-align: right;font-weight: bolder;"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                    {{ activity.duration }}m
+                </p>
+                <p style="text-align: right;font-size: 0.8em;"> {{ activity.location }}</p>
+            </md-whiteframe>
+            <md-card-content>
+                <p>
+                    {{ activity.description }}
+                </p>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="start center" ng-if="activity.members.length">
+                <md-button ng-click="openMembers($event,activity)">
+                    <i class="icon ion-android-people" aria-hidden="true"></i>
+                    {{ activity.members.length }} Member(s)
+                </md-button>
+            </md-card-actions>
+        </md-card>
+
+    </div>
+</div>
+

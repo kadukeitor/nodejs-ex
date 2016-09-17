@@ -1,0 +1,73 @@
+<div layout="row">
+    <div flex="60" flex-offset="20" flex-xs="100" flex-offset-xs="0" flex-gt-md="50" flex-offset-gt-md="25">
+
+        <h3 class="md-subhead" style="text-align: center;" ng-if="!activities.length">
+            Come on, come on, you need to do some activities :-D
+        </h3>
+
+        <md-card ng-click="newActivity()" style="cursor: pointer;" md-ink-ripple>
+            <md-card-header class="md-clickable">
+                <md-card-avatar>
+                    <img class="md-user-avatar" ng-src="{{ user.picture || 'img/avatars/man-1.png' }}"/>
+                </md-card-avatar>
+                <md-card-header-text>
+                    <span class="md-title">Create a new activity</span>
+                    <span class="md-subhead">and watch your friends join.</span>
+                </md-card-header-text>
+            </md-card-header>
+        </md-card>
+
+        <md-card ng-repeat="activity in activities">
+            <md-card-header>
+
+                <md-card-avatar>
+                    <img ng-src="img/activities/{{ activity.activity }}.png"/>
+                </md-card-avatar>
+                <md-card-header-text>
+                    <span class="md-title">{{ activity.activity | capitalize }}</span>
+                    <span class="md-subhead">
+                        <span am-time-ago="activity.datetime"></span>
+                        ( {{ activity.datetime | date:'medium' }} )
+                    </span>
+                </md-card-header-text>
+                <md-menu md-position-mode="target-right target">
+                    <md-button aria-label="Open Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                        <md-icon md-menu-origin md-font-icon="ion-android-more-vertical"></md-icon>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="openMembers($event,activity)">
+                                <div layout="row" flex>
+                                    <p flex>Members</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="exitActivity($event,activity)">
+                                <div layout="row" flex>
+                                    <p flex>Exit Activity</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </md-card-header>
+            <md-card-content>
+                <p>{{ activity.description }}</p>
+                <div style="font-weight: bolder;"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                    {{ activity.duration}}m
+                </div>
+                <div style="font-size: 0.9em;">
+                    {{ activity.location }}
+                </div>
+            </md-card-content>
+        </md-card>
+
+
+    </div>
+</div>
+
+
+<!--<md-button ng-click="newActivity()" class="md-fab md-warn" aria-label="New note"-->
+<!--style="position: absolute;right: 24px;bottom: 24px;">-->
+<!--</md-button>-->

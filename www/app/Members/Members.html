@@ -1,0 +1,29 @@
+<md-dialog class="fullscreen-dialog">
+    <md-toolbar md-scroll-shrink="true">
+        <div class="md-toolbar-tools">
+            <h2 class="md-toolbar-tools">
+                <span flex>Members</span>
+            </h2>
+            <md-button class="md-icon-button" aria-label="Back" ng-click="cancel()">
+                <md-icon md-font-icon="ion-close"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div layout="row" class="Members">
+            <div flex="60" flex-offset="20" flex-xs="100" flex-offset-xs="0" flex-gt-md="50" flex-offset-gt-md="25">
+                <md-card>
+                    <md-list>
+                        <md-list-item ng-repeat="member in activity.members">
+                            <img ng-src="{{ member.picture }}" class="md-avatar"/>
+                            <p>{{ member.displayName }}</p>
+                        </md-list-item>
+                    </md-list>
+                </md-card>
+            </div>
+        </div>
+    </md-dialog-content>
+</md-dialog>
+
+
+

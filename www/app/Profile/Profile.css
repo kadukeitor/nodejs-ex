@@ -1,0 +1,14 @@
+.Profile {
+
+}
+
+.Profile table {
+    width: 100%;
+    text-align: center;
+}
+
+.Profile md-card-avatar {
+    width: 80px;
+    height: 80px;
+    margin-left: 20px;
+}

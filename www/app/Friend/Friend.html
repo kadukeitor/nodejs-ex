@@ -1,0 +1,49 @@
+<md-toolbar md-scroll-shrink="true" md-shrink-speed-factor="0.75">
+    <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Back" ng-click="back()">
+            <md-icon class="fa" md-font-icon="fa-chevron-left"></md-icon>
+        </md-button>
+        <h2 class="md-toolbar-tools">
+            <span flex>{{ friend.displayName }}</span>
+        </h2>
+        <span flex></span>
+        <!--<small style="margin-right: 10px;">Notifications</small>-->
+        <!--<md-switch class="md-secondary" aria-label="Notifications"></md-switch>-->
+    </div>
+</md-toolbar>
+
+<md-content>
+    <div layout="row">
+        <div flex="60" flex-offset="20" flex-xs="100" flex-offset-xs="0" flex-gt-md="50" flex-offset-gt-md="25">
+            <md-card ng-repeat="activity in activities">
+                <md-card-header>
+
+                    <md-card-avatar>
+                        <img ng-src="img/activities/{{ activity.activity }}.png"/>
+                    </md-card-avatar>
+                    <md-card-header-text>
+                        <span class="md-title">{{ activity.activity | capitalize }}</span>
+                    <span class="md-subhead">
+                        <span am-time-ago="activity.datetime"></span>
+                        ( {{ activity.datetime | date:'medium' }} )
+                    </span>
+                    </md-card-header-text>
+                </md-card-header>
+                <md-card-content>
+                    <p>{{ activity.description }}</p>
+                    <div style="font-weight: bolder;"><i class="fa fa-clock-o" aria-hidden="true"></i>
+                        {{ activity.duration}}m
+                    </div>
+                    <div style="font-size: 0.9em;">
+                        {{ activity.location }}
+                    </div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+</md-content>
+
+
+
+
+

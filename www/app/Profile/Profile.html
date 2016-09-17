@@ -1,0 +1,40 @@
+<div layout="row" class="Profile">
+    <div flex="60" flex-offset="20" flex-xs="100" flex-offset-xs="0" flex-gt-md="50" flex-offset-gt-md="25">
+
+        <md-card>
+            <md-card-header class="md-clickable">
+                <md-card-avatar>
+                    <img class="md-user-avatar" ng-src="{{ user.picture || 'img/avatars/man-1.png' }}"/>
+                </md-card-avatar>
+                <md-card-header-text>
+                    <table>
+                        <tr>
+                            <td><b style="font-size: 1.2em;">{{ stats.activities }}</b></td>
+                            <td><b style="font-size: 1.2em;">{{ stats.teams }}</b></td>
+                            <td style="text-align: right;" ng-click="logout()">
+                                <md-button>Logout</md-button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>activities</td>
+                            <td>teams</td>
+                        </tr>
+                    </table>
+                </md-card-header-text>
+            </md-card-header>
+            <md-card-content>
+                <div class="md-headline">{{ user.displayName }}</div>
+                <md-list>
+                    <md-subheader class="md-no-sticky"> Friends</md-subheader>
+                    <md-list-item ng-repeat="friend in friends" ng-click="friendActivities(friend)">
+                        <img ng-src="{{ friend.picture }}" class="md-avatar" alt="{{ friend.displayName }}"/>
+                        <p>{{ friend.displayName }}</p>
+                        <!--<md-switch class="md-secondary"></md-switch>-->
+                    </md-list-item>
+                </md-list>
+            </md-card-content>
+        </md-card>
+
+    </div>
+</div>
+

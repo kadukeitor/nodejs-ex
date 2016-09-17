@@ -1,0 +1,93 @@
+body, md-content, .app {
+    background-color: #f4f4f7;
+}
+
+/*Icons*/
+
+md-icon {
+    font-size: 1.4em !important;
+}
+
+.fa-md {
+    height: auto;
+}
+
+/*Card*/
+
+md-card[md-ink-ripple] {
+    position: relative;
+}
+
+/*Input*/
+
+md-input-container.md-block {
+    display: block;
+    padding-bottom: 10px;
+}
+
+md-card:focus {
+    outline: none;
+    border: 0;
+}
+
+/*Dialog*/
+
+md-dialog.fullscreen-dialog {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    background-color: #f4f4f7;
+}
+
+/*Sports*/
+
+.sports-container {
+    text-align: center;
+}
+
+.sports {
+    padding: 15px;
+    margin: auto;
+    width: 50%;
+}
+
+/*DateTime Picker*/
+
+.dtp .dtp-close {
+    display: none;
+}
+
+.dtp > .dtp-content > .dtp-date-view > header.dtp-header {
+    background: #1565C0;
+    color: #fff;
+    text-align: center;
+    padding: 3px;
+}
+
+.dtp div.dtp-date, .dtp div.dtp-time {
+    background: #2196F3;
+    text-align: center;
+    color: #fff;
+    padding: 10px;
+}
+
+.dtp table.dtp-picker-days tr > td > a.selected {
+    background: #2196F3;
+    color: #fff;
+}
+
+.dtp .dtp-picker-time > a.dtp-select-hour.selected {
+    background: #1976D2;
+    color: #fff;
+}
+
+.dtp .dtp-hand.on {
+    background: #2196F3;
+}
+
+.dtp .dtp-actual-meridien a.selected {
+    background: #1976D2;
+    color: #fff;
+}

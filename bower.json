@@ -1,0 +1,30 @@
+{
+  "name": "sofitn",
+  "description": "Social Fitness on OpenShift 3",
+  "main": "www/index.html",
+  "authors": [
+    "Jorge Garcia <kadukeitor@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/kadukeitor/sofitn",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-material": "^1.1.1",
+    "angular-ui-router": "^0.3.1",
+    "angular-sanitize": "^1.5.8",
+    "font-awesome": "^4.6.3",
+    "Ionicons": "ionicons#^2.0.1",
+    "satellizer": "^0.15.5",
+    "ngmap": "^1.17.6",
+    "angular-material-datetimepicker": "^1.4.0",
+    "angular-moment": "^0.10.3",
+    "randomcolor": "^0.4.4",
+    "socket.io-client": "^1.4.8"
+  }
+}
