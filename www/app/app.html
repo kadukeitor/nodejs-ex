@@ -9,7 +9,7 @@
     </div>
 </md-toolbar>
 
-<md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4" >
+<md-sidenav class="md-sidenav-left" md-component-id="left" md-whiteframe="4">
     <md-content layout-margin>
         <md-list>
             <md-list-item ng-click="goTo('app.home')">
@@ -23,6 +23,10 @@
             <md-list-item ng-click="goTo('app.profile')">
                 <md-icon md-font-icon="ion-android-person"></md-icon>
                 <p>Profile</p>
+            </md-list-item>
+            <md-list-item ng-if="user.isAdmin" ng-click="goTo('app.admin')">
+                <md-icon md-font-icon="ion-unlocked"></md-icon>
+                <p>Administration</p>
             </md-list-item>
         </md-list>
     </md-content>

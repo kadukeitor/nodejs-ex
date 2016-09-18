@@ -12,6 +12,15 @@ module.exports = function (params) {
     var Session = require('../Socket/Schema');
     var Authentication = require('../Authentication')(params);
 
+    server.get('/api/admin/users',
+        Authentication.ensureAuthenticated,
+        Authentication.ensureIsAdmin,
+        function (req, res) {
+            User.find({}, '-friends', function (err, users) {
+                res.json(users);
+            });
+        });
+
     server.get('/api/bots',
         function (req, res) {
             User.find({isBot: true}, '-friends', function (err, users) {

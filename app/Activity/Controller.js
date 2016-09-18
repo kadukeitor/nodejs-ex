@@ -119,25 +119,20 @@ module.exports = function (params) {
 
     server.post('/api/activity/:user',
         Authentication.ensureAuthenticated,
+        Authentication.ensureIsAdmin,
         function (req, res, next) {
-            User.findOne({_id: req.user, isAdmin: true}, function (err, user) {
-                if (!user) {
-                    res.status(401).send({message: 'Invalid Admin'});
-                } else {
-                    var data = req.body;
-                    data.creator = req.params.user;
-                    var activity = new Activity(data);
-                    activity.members = [req.params.user];
-                    activity.save(function (err, activity) {
-                        if (activity) {
-                            activity.populate('creator members', '-friends -facebookToken -facebookId', function (err, activity) {
-                                broadcastActivity('create', activity, req.params.user);
-                                res.json(activity)
-                            });
-                        } else {
-                            res.status(500).send({message: 'Invalid Activity'});
-                        }
+            var data = req.body;
+            data.creator = req.params.user;
+            var activity = new Activity(data);
+            activity.members = [req.params.user];
+            activity.save(function (err, activity) {
+                if (activity) {
+                    activity.populate('creator members', '-friends -facebookToken -facebookId', function (err, activity) {
+                        broadcastActivity('create', activity, req.params.user);
+                        res.json(activity)
                     });
+                } else {
+                    res.status(500).send({message: 'Invalid Activity'});
                 }
             });
         });

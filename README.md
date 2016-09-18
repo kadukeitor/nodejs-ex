@@ -31,3 +31,14 @@ oc logs -f bc/sofitn
 oc status
 ```
 
+## Database
+
+```
+oc rsh mongodbXXX
+```
+
+## WebHooks
+
+```
+oc describe bc/sofitn
+```

@@ -17,9 +17,16 @@ angular
 function AdminCtrl($scope, $state, $mdToast, AdminSvc) {
 
     $scope.bots = [];
+    $scope.users = [];
+
     AdminSvc.bots()
         .then(function (bots) {
             $scope.bots = bots;
+        });
+
+    AdminSvc.users()
+        .then(function (users) {
+            $scope.users = users;
         });
 
     $scope.minDate = new Date();
@@ -46,6 +53,15 @@ function AdminCtrl($scope, $state, $mdToast, AdminSvc) {
 
 function AdminSvc($q, $http) {
 
+    function users() {
+        var deferred = $q.defer();
+        $http.get('/api/admin/users')
+            .then(function (response) {
+                deferred.resolve(response.data);
+            });
+        return deferred.promise;
+    }
+
     function bots() {
         var deferred = $q.defer();
         $http.get('/api/bots')
@@ -65,6 +81,7 @@ function AdminSvc($q, $http) {
     }
 
     return {
+        users: users,
         bots: bots,
         createBotActivity: createBotActivity
     }

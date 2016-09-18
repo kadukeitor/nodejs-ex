@@ -2,7 +2,9 @@
     <div flex="60" flex-offset="20" flex-xs="100" flex-offset-xs="0" flex-gt-md="50" flex-offset-gt-md="25">
         <md-card style="margin-bottom: 40px;">
             <md-card-content>
+
                 <md-subheader class="md-no-sticky"> Create Bot Activity</md-subheader>
+
                 <form name="activityForm" ng-submit="save(activity)">
                     <md-input-container class="md-block">
                         <label>Bot</label>
@@ -59,6 +61,13 @@
                     </div>
 
                 </form>
+
+                <md-subheader class="md-no-sticky"> Users</md-subheader>
+
+                <md-list-item ng-repeat="user in users">
+                    <img ng-src="{{ user.picture }}" class="md-avatar" alt="{{ user.displayName }}"/>
+                    <p>{{ user.displayName }}</p>
+                </md-list-item>
 
             </md-card-content>
         </md-card>

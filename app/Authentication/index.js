@@ -5,6 +5,9 @@ var config = require('../../config.js');
 
 module.exports = function (params) {
 
+    // Internal dependencies
+    var User = require('../User/Schema');
+
     /*
      |--------------------------------------------------------------------------
      | Login Required Middleware
@@ -53,8 +56,22 @@ module.exports = function (params) {
         }
     }
 
+    function ensureIsAdmin(req, res, next) {
+        if (!req.user) {
+            return res.status(401).send({message: 'Invalid User'});
+        }
+        User.findOne({_id: req.user, isAdmin: true}, function (err, user) {
+            if (!user) {
+                return res.status(401).send({message: 'Invalid Admin'});
+            } else {
+                next();
+            }
+        });
+    }
+
     return {
         ensureAuthenticated: ensureAuthenticated,
+        ensureIsAdmin: ensureIsAdmin,
         isValidToken: isValidToken
     };
 
