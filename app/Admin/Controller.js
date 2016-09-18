@@ -22,9 +22,9 @@ module.exports = function (params) {
     server.get('/api/bots/sync',
         function (req, res, next) {
             var botsTemplate = [
-                {facebookId: 'bot-1', displayName: 'Green Bot', picture: '/img/bots/robot-1.png'},
-                {facebookId: 'bot-6', displayName: 'Long Neck Bot', picture: '/img/bots/robot-6.png'},
-                {facebookId: 'bot-10', displayName: 'Glasses Bot', picture: '/img/bots/robot-10.png'}
+                {facebookId: 'bot-1', displayName: 'Green Bot', picture: './img/bots/robot-1.png'},
+                {facebookId: 'bot-6', displayName: 'Long Neck Bot', picture: './img/bots/robot-6.png'},
+                {facebookId: 'bot-10', displayName: 'Glasses Bot', picture: './img/bots/robot-10.png'}
             ];
             async.mapSeries(botsTemplate, function (botTemplate, callbackBot) {
                 User.findOne({facebookId: botTemplate.facebookId}, function (err, bot) {

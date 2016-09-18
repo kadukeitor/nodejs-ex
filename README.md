@@ -19,4 +19,15 @@ cp openshift/templates/sofitn.json.dist openshift/templates/sofitn.json
 oc new-app -f openshift/templates/sofitn.json
 ```
 
+## Build Logs
+
+```
+oc logs -f bc/sofitn
+```
+
+## Status
+
+```
+oc status
+```
 
