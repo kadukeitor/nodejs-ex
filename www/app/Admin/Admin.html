@@ -1,15 +1,16 @@
-<div layout="row" class="Admin">
-    <div flex="60" flex-offset="20" flex-xs="100" flex-offset-xs="0" flex-gt-md="50" flex-offset-gt-md="25">
-        <md-card style="margin-bottom: 40px;">
+<div layout="row" layout-xs="column" class="Admin" style="margin-bottom: 60px;">
+
+    <div flex flex-xs="75">
+
+        <md-card>
             <md-card-content>
-
-                <md-subheader class="md-no-sticky"> Create Bot Activity</md-subheader>
-
+                <md-subheader class="md-no-sticky"> Create Activity</md-subheader>
                 <form name="activityForm" ng-submit="save(activity)">
                     <md-input-container class="md-block">
-                        <label>Bot</label>
-                        <md-select name="bot" ng-model="activity.bot" required>
-                            <md-option value="{{ bot._id }}" ng-repeat="bot in bots">{{ bot.displayName }}</md-option>
+                        <label>User</label>
+                        <md-select name="user" ng-model="activity.user" required>
+                            <md-option value="{{ user._id }}" ng-repeat="user in users">{{ user.displayName }}
+                            </md-option>
                         </md-select>
                     </md-input-container>
                     <md-input-container class="md-block">
@@ -61,17 +62,53 @@
                     </div>
 
                 </form>
+            </md-card-content>
+        </md-card>
 
-                <md-subheader class="md-no-sticky"> Users</md-subheader>
 
+    </div>
+
+    <div flex flex-xs="75">
+
+        <md-card>
+            <md-card-content>
+                <md-subheader class="md-no-sticky">{{ users.length }} User(s)</md-subheader>
                 <md-list-item ng-repeat="user in users">
                     <img ng-src="{{ user.picture }}" class="md-avatar" alt="{{ user.displayName }}"/>
                     <p>{{ user.displayName }}</p>
                 </md-list-item>
+            </md-card-content>
+        </md-card>
 
+        <md-card>
+            <md-card-content>
+                <md-list class="md-dense" flex>
+                    <md-subheader class="md-no-sticky">{{ activities.length }} Activities</md-subheader>
+                    <md-list-item ng-repeat="activity in activities" class="md-3-line">
+                        <img ng-src="img/activities/{{ activity.activity }}.png" class="md-avatar"
+                             style="border-radius: 0;"
+                             alt="{{ activity.activity }}" ng-click="openMembers($event,activity)"/>
+                        <div class="md-list-item-text" layout="column">
+                            <h3><b>{{ activity.activity | capitalize}}</b></h3>
+                            <p>
+                                <span am-time-ago="activity.datetime"></span>
+                                ( {{ activity.datetime | date:'medium' }} )
+                            </p>
+                            <h3>{{ activity.duration}}m</h3>
+                            <p>{{ activity.location}}</p>
+                            <h3>{{ activity.members.length }} Member(s)</h3>
+                            <p>{{ activity.description }}</p>
+                        </div>
+                        <md-button class="md-secondary md-icon-button" ng-click="delete($event,activity)"
+                                   aria-label="delete">
+                            <md-icon class="fa" md-font-icon="fa-times"></md-icon>
+                        </md-button>
+                    </md-list-item>
+                </md-list>
             </md-card-content>
         </md-card>
 
     </div>
+
 </div>
 

@@ -1,3 +1,5 @@
+var moment = require('moment');
+
 module.exports = function (params) {
 
     // Params
@@ -10,6 +12,15 @@ module.exports = function (params) {
     var Session = require('../Socket/Schema');
     var Authentication = require('../Authentication')(params);
 
+    server.get('/api/activities',
+        Authentication.ensureAuthenticated,
+        Authentication.ensureIsAdmin,
+        function (req, res, next) {
+            Activity.find({}).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId').exec(function (err, result) {
+                res.json(result);
+            });
+        });
+
     server.get('/api/activities/wall',
         Authentication.ensureAuthenticated,
         function (req, res, next) {
@@ -17,8 +28,19 @@ module.exports = function (params) {
                 if (!user) {
                     return res.status(400).send({message: 'User not found'});
                 } else {
+                    // From
+                    var from = moment(new Date());
+                    from.subtract(7, 'days');
+                    // To
+                    var to = moment(new Date());
+                    to.add(7, 'days');
+                    // Me
                     user.friends.push(req.user);
-                    Activity.find({members: {$in: user.friends}}).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId').exec(function (err, result) {
+                    // Query
+                    Activity.find({
+                        members: {$in: user.friends},
+                        datetime: {$gte: from.toDate(), $lte: to.toDate()}
+                    }).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId').exec(function (err, result) {
                         res.json(result);
                     });
                 }
@@ -156,6 +178,22 @@ module.exports = function (params) {
             });
         });
 
+    server.delete('/api/activity/:activity',
+        Authentication.ensureAuthenticated,
+        Authentication.ensureIsAdmin,
+        function (req, res, next) {
+            Activity.findOne({_id: req.params.activity}, function (err, activity) {
+                if (!activity) {
+                    res.status(500).send({message: 'Invalid Activity'});
+                } else {
+                    broadcastActivity('delete', activity, req.user);
+                    Activity.remove({_id: req.params.activity}, function (err, response) {
+                        res.json(response)
+                    });
+                }
+            });
+        });
+
     function broadcastActivity(operation, activity, user_id) {
         switch (operation) {
             case 'update':
@@ -171,6 +209,13 @@ module.exports = function (params) {
                         sessions.forEach(function (session) {
                             io.to(session.socket).emit('activity:' + operation, activity);
                         });
+                    });
+                });
+                break;
+            case 'delete':
+                Session.find({$or: [{user: {$in: activity.members}}, {user: user_id}]}, function (err, sessions) {
+                    sessions.forEach(function (session) {
+                        io.to(session.socket).emit('delete:' + operation, activity);
                     });
                 });
                 break;

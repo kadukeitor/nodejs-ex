@@ -14,10 +14,11 @@ angular
     .factory('AdminSvc', AdminSvc)
 ;
 
-function AdminCtrl($scope, $state, $mdToast, AdminSvc) {
+function AdminCtrl($scope, $state, $mdToast, $mdDialog, AdminSvc) {
 
     $scope.bots = [];
     $scope.users = [];
+    $scope.activities = [];
 
     AdminSvc.bots()
         .then(function (bots) {
@@ -29,6 +30,11 @@ function AdminCtrl($scope, $state, $mdToast, AdminSvc) {
             $scope.users = users;
         });
 
+    AdminSvc.activities()
+        .then(function (activities) {
+            $scope.activities = activities;
+        });
+
     $scope.minDate = new Date();
     $scope.activity = {
         activity: 'notification',
@@ -38,7 +44,7 @@ function AdminCtrl($scope, $state, $mdToast, AdminSvc) {
     };
 
     $scope.save = function (activity) {
-        AdminSvc.createBotActivity(activity.bot, activity)
+        AdminSvc.createUserActivity(activity.user, activity)
             .then(function (response) {
                 $mdToast.show(
                     $mdToast.simple()
@@ -48,6 +54,30 @@ function AdminCtrl($scope, $state, $mdToast, AdminSvc) {
                 $state.go('app.home');
             });
     };
+
+    $scope.delete = function (ev, activity) {
+        var confirm = $mdDialog.confirm()
+            .title('Delete  Activity?')
+            .textContent('Do you want to delete of this Activity?')
+            .ariaLabel('Delete  Activity?')
+            .targetEvent(ev)
+            .ok('Yes')
+            .cancel('No');
+        $mdDialog.show(confirm)
+            .then(function () {
+                AdminSvc.deleteActivity(activity)
+                    .then(function (response) {
+                        if (response) {
+                            $scope.activities.splice($scope.activities.indexOf(activity), 1);
+                            $mdToast.show(
+                                $mdToast.simple()
+                                    .textContent('Activity Removed')
+                                    .hideDelay(3000)
+                            );
+                        }
+                    });
+            });
+    }
 
 }
 
@@ -71,9 +101,27 @@ function AdminSvc($q, $http) {
         return deferred.promise;
     }
 
-    function createBotActivity(bot, activity) {
+    function activities() {
         var deferred = $q.defer();
-        $http.post('/api/activity/' + bot, activity)
+        $http.get('/api/activities')
+            .then(function (response) {
+                deferred.resolve(response.data);
+            });
+        return deferred.promise;
+    }
+
+    function createUserActivity(user, activity) {
+        var deferred = $q.defer();
+        $http.post('/api/activity/' + user, activity)
+            .then(function (response) {
+                deferred.resolve(response.data);
+            });
+        return deferred.promise;
+    }
+
+    function deleteActivity(activity) {
+        var deferred = $q.defer();
+        $http.delete('/api/activity/' + activity._id)
             .then(function (response) {
                 deferred.resolve(response.data);
             });
@@ -83,7 +131,9 @@ function AdminSvc($q, $http) {
     return {
         users: users,
         bots: bots,
-        createBotActivity: createBotActivity
+        activities: activities,
+        createUserActivity: createUserActivity,
+        deleteActivity: deleteActivity
     }
 
 }
