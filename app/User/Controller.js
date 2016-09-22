@@ -128,6 +128,7 @@ module.exports = function (params) {
                         user.facebookToken = accessToken;
                         user.picture = user.picture || 'https://graph.facebook.com/v2.3/' + profile.id + '/picture?type=large';
                         user.displayName = user.displayName || profile.name;
+                        user.email = profile.email;
                         user.save(function () {
                             var token = createJWT(user);
                             res.send({token: token});
@@ -143,6 +144,8 @@ module.exports = function (params) {
                     if (existingUser) {
                         // Updating facebookToken
                         existingUser.facebookToken = accessToken;
+                        existingUser.displayName = profile.name;
+                        existingUser.email = profile.email;
                         existingUser.save(function () {
                         });
                         var token = createJWT(existingUser);
@@ -154,6 +157,7 @@ module.exports = function (params) {
                     user.facebookToken = accessToken;
                     user.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
                     user.displayName = profile.name;
+                    user.email = profile.email;
                     user.save(function (err, user) {
                         var token = createJWT(user);
                         res.send({token: token});
@@ -176,7 +180,7 @@ module.exports = function (params) {
             if (!user) {
                 return res.status(400).send({message: 'User not found'});
             } else {
-                user.populate('friends', '-friends -facebookToken -facebookId', function (err, user) {
+                user.populate('friends', '-friends -facebookToken -facebookId -email', function (err, user) {
                     res.json(user.friends)
                 });
             }
@@ -203,7 +207,7 @@ module.exports = function (params) {
      |--------------------------------------------------------------------------
      */
     function syncFriends(user, done) {
-        var graphApiUrl = 'https://graph.facebook.com/v2.5/' + user.facebookId + '/friends?fields=picture,name';
+        var graphApiUrl = 'https://graph.facebook.com/v2.5/' + user.facebookId + '/friends?fields=picture,name,email';
         request.get({url: graphApiUrl, qs: user.facebookToken, json: true}, function (err, response, result) {
             var friends = result.data;
             async.each(friends, function (friend, callback) {
@@ -217,6 +221,7 @@ module.exports = function (params) {
                         newUser.facebookId = friend.id;
                         newUser.picture = 'https://graph.facebook.com/' + friend.id + '/picture?type=large';
                         newUser.displayName = friend.name;
+                        newUser.email = friend.email;
                         newUser.save(function (err, newUser) {
                             // Update User's Friends
                             User.findByIdAndUpdate(user._id, {$addToSet: {friends: newUser._id}}, {new: true}, callback);

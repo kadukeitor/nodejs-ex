@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var schema = new Schema({
     displayName: String,
     picture: String,
+    email: String,
     facebookId: String,
     facebookToken: Schema.Types.Mixed,
     friends: [{type: Schema.Types.ObjectId, ref: 'User'}],

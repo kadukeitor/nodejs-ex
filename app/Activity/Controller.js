@@ -16,7 +16,7 @@ module.exports = function (params) {
         Authentication.ensureAuthenticated,
         Authentication.ensureIsAdmin,
         function (req, res, next) {
-            Activity.find({}).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId').exec(function (err, result) {
+            Activity.find({}).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId -email').exec(function (err, result) {
                 res.json(result);
             });
         });
@@ -40,7 +40,7 @@ module.exports = function (params) {
                     Activity.find({
                         members: {$in: user.friends},
                         datetime: {$gte: from.toDate(), $lte: to.toDate()}
-                    }).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId').exec(function (err, result) {
+                    }).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId -email').exec(function (err, result) {
                         res.json(result);
                     });
                 }
@@ -50,7 +50,7 @@ module.exports = function (params) {
     server.get('/api/activities/me',
         Authentication.ensureAuthenticated,
         function (req, res, next) {
-            Activity.find({members: req.user}).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId').exec(function (err, result) {
+            Activity.find({members: req.user}).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId -email').exec(function (err, result) {
                 res.json(result);
             });
         });
@@ -62,7 +62,7 @@ module.exports = function (params) {
                 if (!user) {
                     res.status(500).send({message: 'Invalid Friend'});
                 } else {
-                    Activity.find({members: req.params.id}).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId').exec(function (err, result) {
+                    Activity.find({members: req.params.id}).sort('-datetime').populate('creator members', '-friends -facebookToken -facebookId -email').exec(function (err, result) {
                         res.json(result);
                     });
                 }
@@ -72,7 +72,7 @@ module.exports = function (params) {
     server.get('/api/activities/me/stats',
         Authentication.ensureAuthenticated,
         function (req, res, next) {
-            Activity.find({members: req.user}).populate('creator members', '-friends -facebookToken -facebookId').exec(function (err, activities) {
+            Activity.find({members: req.user}).populate('creator members', '-friends -facebookToken -facebookId -email').exec(function (err, activities) {
                 res.json({
                     activities: activities.length,
                     teams: activities.reduce(function (a, b) {
@@ -88,7 +88,7 @@ module.exports = function (params) {
         function (req, res, next) {
             Activity.findOneAndUpdate({_id: req.params.id}, {$addToSet: {members: req.user}}, {new: true}, function (err, activity) {
                 if (activity) {
-                    activity.populate('creator members', '-friends -facebookToken -facebookId', function (err, activity) {
+                    activity.populate('creator members', '-friends -facebookToken -facebookId -email', function (err, activity) {
                         broadcastActivity('update', activity, req.user);
                         res.json(activity)
                     });
@@ -106,7 +106,7 @@ module.exports = function (params) {
                     activity.members.pull(req.user);
                     activity.save(function (err, activity) {
                         if (activity) {
-                            activity.populate('creator members', '-friends -facebookToken -facebookId', function (err, activity) {
+                            activity.populate('creator members', '-friends -facebookToken -facebookId -email', function (err, activity) {
                                 broadcastActivity('update', activity, req.user);
                                 res.json(activity)
                             });
@@ -129,7 +129,7 @@ module.exports = function (params) {
             activity.members = [req.user];
             activity.save(function (err, activity) {
                 if (activity) {
-                    activity.populate('creator members', '-friends -facebookToken -facebookId', function (err, activity) {
+                    activity.populate('creator members', '-friends -facebookToken -facebookId -email', function (err, activity) {
                         broadcastActivity('create', activity, req.user);
                         res.json(activity)
                     });
@@ -149,7 +149,7 @@ module.exports = function (params) {
             activity.members = [req.params.user];
             activity.save(function (err, activity) {
                 if (activity) {
-                    activity.populate('creator members', '-friends -facebookToken -facebookId', function (err, activity) {
+                    activity.populate('creator members', '-friends -facebookToken -facebookId -email', function (err, activity) {
                         broadcastActivity('create', activity, req.params.user);
                         res.json(activity)
                     });
@@ -168,7 +168,7 @@ module.exports = function (params) {
                 creator: req.user
             }, data, {new: true}, function (err, activity) {
                 if (activity) {
-                    activity.populate('creator members', '-friends -facebookToken -facebookId', function (err, activity) {
+                    activity.populate('creator members', '-friends -facebookToken -facebookId -email', function (err, activity) {
                         broadcastActivity('update', activity, req.user);
                         res.json(activity)
                     });

@@ -27,7 +27,7 @@ angular
         $authProvider.tokenPrefix = 'sofitn';
         $authProvider.facebook({
             clientId: '876896985743811',
-            scope: ['public_profile', 'user_friends']
+            scope: ['public_profile', 'user_friends', 'email']
         });
         // Routes
         $stateProvider
